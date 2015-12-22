@@ -17,6 +17,7 @@ import com.nmbb.oplayer.OPreference;
 import com.nmbb.oplayer.R;
 import com.nmbb.oplayer.service.MediaScannerService;
 import com.nmbb.oplayer.ui.helper.FileDownloadHelper;
+import com.nmbb.oplayer.ui.vitamio.InitActivity;
 import com.nmbb.oplayer.ui.vitamio.LibsChecker;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
@@ -31,6 +32,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+//		LibsChecker.checkVitamioLibs(ctx)
 		if (!LibsChecker.checkVitamioLibs(this, R.string.init_decoders))
 			return;
 

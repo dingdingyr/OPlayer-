@@ -1,16 +1,25 @@
 package com.nmbb.oplayer.ui.vitamio;
 
+import io.vov.utils.Log;
 import io.vov.vitamio.Vitamio;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.WindowManager;
 
+import com.nmbb.oplayer.OPlayerApplication;
+import com.nmbb.oplayer.OPreference;
 import com.nmbb.oplayer.R;
+import com.nmbb.oplayer.service.MediaScannerService;
 
 public class InitActivity extends Activity {
 	public static final String FROM_ME = "fromVitamioInitActivity";

@@ -1,10 +1,14 @@
 package com.nmbb.oplayer.service;
 
+import io.vov.vitamio.ThumbnailUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.ActivityManager;
@@ -12,16 +16,19 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+
 import com.nmbb.oplayer.OPlayerApplication;
 import com.nmbb.oplayer.OPreference;
 import com.nmbb.oplayer.database.DbHelper;
 import com.nmbb.oplayer.exception.Logger;
 import com.nmbb.oplayer.po.POMedia;
+import com.nmbb.oplayer.util.ConvertUtils;
 import com.nmbb.oplayer.util.FileUtils;
 import com.nmbb.oplayer.util.PinyinUtils;
 import com.nmbb.oplayer.util.StringUtils;
@@ -227,39 +234,39 @@ public class MediaScannerService extends Service implements Runnable {
 
 	/** 提取生成缩略图 */
 	private void extractThumbnail(POMedia media) {
-//		final Context ctx = OPlayerApplication.getContext();
-//		//		ThumbnailUtils.
-//		Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(media.path, Images.Thumbnails.MINI_KIND);
-//		try {
-//			if (bitmap == null) {
-//				//缩略图创建失败
-//				bitmap = Bitmap.createBitmap(ThumbnailUtils.TARGET_SIZE_MINI_THUMBNAIL_WIDTH, ThumbnailUtils.TARGET_SIZE_MINI_THUMBNAIL_HEIGHT, Bitmap.Config.RGB_565);
-//			}
-//
-//			media.width = bitmap.getWidth();
-//			media.height = bitmap.getHeight();
-//
-//			//缩略图
-//			bitmap = ThumbnailUtils.extractThumbnail(bitmap, ConvertUtils.dipToPX(ctx, ThumbnailUtils.TARGET_SIZE_MICRO_THUMBNAIL_WIDTH), ConvertUtils.dipToPX(ctx, ThumbnailUtils.TARGET_SIZE_MICRO_THUMBNAIL_HEIGHT), ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-//			if (bitmap != null) {
-//				//将缩略图存到视频当前路径
-//				File thum = new File(OPlayerApplication.OPLAYER_VIDEO_THUMB, UUID.randomUUID().toString());
-//				media.thumb_path = thum.getAbsolutePath();
-//				//thum.createNewFile();
-//				FileOutputStream iStream = new FileOutputStream(thum);
-//				bitmap.compress(Bitmap.CompressFormat.JPEG, 85, iStream);
-//				iStream.close();
-//			}
-//
-//			//入库
-//
-//		} catch (Exception ex) {
-//			Logger.e(ex);
-//		} finally {
-//			if (bitmap != null)
-//				bitmap.recycle();
-//
-//		}
+		final Context ctx = OPlayerApplication.getContext();
+		//		ThumbnailUtils.
+		Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(ctx, media.path, ThumbnailUtils.MINI_KIND);
+		try {
+			if (bitmap == null) {
+				//缩略图创建失败
+				bitmap = Bitmap.createBitmap(ThumbnailUtils.TARGET_SIZE_MINI_THUMBNAIL_WIDTH, ThumbnailUtils.TARGET_SIZE_MINI_THUMBNAIL_HEIGHT, Bitmap.Config.RGB_565);
+			}
+
+			media.width = bitmap.getWidth();
+			media.height = bitmap.getHeight();
+
+			//缩略图
+			bitmap = ThumbnailUtils.extractThumbnail(bitmap, ConvertUtils.dipToPX(ctx, ThumbnailUtils.TARGET_SIZE_MICRO_THUMBNAIL_WIDTH), ConvertUtils.dipToPX(ctx, ThumbnailUtils.TARGET_SIZE_MICRO_THUMBNAIL_HEIGHT), ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+			if (bitmap != null) {
+				//将缩略图存到视频当前路径
+				File thum = new File(OPlayerApplication.OPLAYER_VIDEO_THUMB, UUID.randomUUID().toString());
+				media.thumb_path = thum.getAbsolutePath();
+				//thum.createNewFile();
+				FileOutputStream iStream = new FileOutputStream(thum);
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 85, iStream);
+				iStream.close();
+			}
+
+			//入库
+
+		} catch (Exception ex) {
+			Logger.e(ex);
+		} finally {
+			if (bitmap != null)
+				bitmap.recycle();
+
+		}
 	}
 
 	// ~~~ 状态改变 

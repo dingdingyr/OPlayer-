@@ -1,16 +1,5 @@
 package com.nmbb.oplayer.ui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import com.nmbb.oplayer.R;
-import com.nmbb.oplayer.po.OnlineVideo;
-import com.nmbb.oplayer.ui.base.ArrayAdapter;
-import com.nmbb.oplayer.ui.helper.XmlReaderHelper;
-import com.nmbb.oplayer.ui.player.VideoActivity;
-import com.nmbb.oplayer.util.FileUtils;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -35,6 +23,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nmbb.oplayer.R;
+import com.nmbb.oplayer.po.OnlineVideo;
+import com.nmbb.oplayer.ui.base.ArrayAdapter;
+import com.nmbb.oplayer.ui.helper.XmlReaderHelper;
+import com.nmbb.oplayer.util.FileUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentOnline extends FragmentBase implements OnItemClickListener {
 
@@ -106,12 +105,9 @@ public class FragmentOnline extends FragmentBase implements OnItemClickListener 
 		case 3:
 			level = 4;
 			// clearAndLoad(item.url);
-			Intent intent = new Intent(getActivity(), VideoActivity.class);
-			intent.setData(Uri.parse(item.url));
-			// intent.putExtra("path", item.url);
-			intent.putExtra(
-					"displayName                                                                                                                                                                                            ",
-					item.title);
+			Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+			intent.putExtra("path", item.url);
+			intent.putExtra("title", item.title);
 			startActivity(intent);
 			break;
 		}
@@ -164,7 +160,7 @@ public class FragmentOnline extends FragmentBase implements OnItemClickListener 
 	private void initWebView() {
 		mWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 		mWebView.getSettings().setJavaScriptEnabled(true);
-		mWebView.getSettings().setPluginsEnabled(true);
+//		mWebView.getSettings().setPluginsEnabled(true);
 
 		mWebView.setWebViewClient(new WebViewClient() {
 
