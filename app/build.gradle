@@ -28,5 +28,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar', '*.so'])
 
-//    compile project(':extras:vitamio-bundle')
 }
